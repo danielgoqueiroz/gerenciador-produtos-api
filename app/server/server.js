@@ -1,6 +1,9 @@
-const express = require("express");
-const app = express();
 require("dotenv").config();
+
+const express = require("express");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+const app = express();
 
 //Definição de rotas
 let routerInfo = require("../routes/info");

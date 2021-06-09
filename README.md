@@ -1,55 +1,92 @@
-# Desafio
+## Descrição
 
-Introdução
-Criar um gerenciador de produtos, comentários e categorias, com controle e
+Gerenciador de produtos, comentários e categorias, com controle e
 autenticação de usuários.
-O Projeto
-Desenvolver uma API RESTful utilizando nodejs e banco de dados relacional. Cada
-produto deve pertencer a uma categoria pré registrada no sistema.
-Funcionalidades
-● Usuários
-○ (store) Cadastrar usuário
-○ (login) Login de usuário retornando um bearer token para utilizar nas
-chamadas abaixo
-● Categorias
-○ (store) Cadastrar categoria
-○ (update) Atualizar categoria
-○ (delete) Remover categoria
-○ (show) Exibir categoria
-○ (index) Listar categorias
-● Produtos
-○ (store) Cadastrar produto
-○ (update) Atualizar produto
-○ (delete) Remover produto
-○ (show) Exibir produto
-○ (index) Listar produtos
-■ Filtrar por categorias
-Exemplo de produto
-{
-"id": 1,
-"categoryId": 2,
-"name": "product 1",
-"manufacturingDate": "2020-07-17T12:55:33.000Z",
-"perishableProduct": true,
-"expirationDate": "2020-07-27T12:55:33.000Z",
-"price": 120,
-}
-Regras de negócio
-● A data de fabricação nunca deve ser maior que a data de validade;
-● O Preço do produto deverá ser registrado com 2 casas decimais;
-● A listagem deve ter a possibilidade de ordenação dos campos e com uma paginação
-de 10 produtos por página.
-Diferenciais
-● Utilizar testes unitários e de integração;
-● Documentação dos endpoints da API;
-● Front-end é opcional.
 
-# Documentações
+### O Projeto
+
+Desenvolver uma API RESTful utilizando nodejs e banco de dados relacional.
+
+Cada produto deve pertencer a uma categoria pré registrada no sistema.
+
+Funcionalidades
+
+### Usuários (User)
+
+- (store) Cadastrar usuário
+- (login) Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
+
+User
+
+```
+{
+    name: string,
+    password: string
+}
+```
+
+### Categorias (Category)
+
+- (store) Cadastrar categoria
+- (update) Atualizar categoria
+- (delete) Remover categoria
+- (show) Exibir categoria
+- (index) Listar categorias
+
+```
+{
+    id: number,
+    description: string
+}
+```
+
+### Produtos (Product)
+
+- (store) Cadastrar produto
+- (update) Atualizar produto
+- (delete) Remover produto
+- (show) Exibir produto
+- (index) Listar produtos
+  ■ Filtrar por categorias
+
+  Exemplo de produto:
+
+  ```
+  {
+    "id": number,
+    "categoryId": number,
+    "name": string,
+    "manufacturingDate": date, // Formatação yyyy-MM-ddTHH:mm:ss.SZ ex: 2020-07-27T12:55:33.000Z
+    "perishableProduct": boolean,
+    "expirationDate": date,
+    "price": int,
+  }
+  ```
+
+  Validações:
+
+- A data de fabricação (manufacturingDate) deve ser maior que a data de validade (expirationDate)
+- O Preço do produto (price) deverá ser registrado com 2 casas decimais, Exemplo: 120.00
+- A listagem de produtos deve permitir ordenação por campos e com paginação contendo 10 produtos por página;
+
+  ### Regras de negócio
+
+Diferenciais
+
+- Deve atender as regras de validação informadas;
+- Utilizar testes unitários e de integração;
+- Documentação dos endpoints da API (sweagger);
+
+# Referências
 
 ## Node
 
 https://nodejs.dev/learn/how-to-exit-from-a-nodejs-program
 
-# jwt
+### jwt (Login)
 
 https://www.luiztools.com.br/post/autenticacao-json-web-token-jwt-em-nodejs/
+
+## Documentação (api)
+
+https://medium.com/swlh/automatic-api-documentation-in-node-js-using-swagger-dd1ab3c78284
