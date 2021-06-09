@@ -1,3 +1,5 @@
+# Desafio
+
 Introdução
 Criar um gerenciador de produtos, comentários e categorias, com controle e
 autenticação de usuários.
@@ -47,3 +49,7 @@ Diferenciais
 ## Node
 
 https://nodejs.dev/learn/how-to-exit-from-a-nodejs-program
+
+# jwt
+
+https://www.luiztools.com.br/post/autenticacao-json-web-token-jwt-em-nodejs/
