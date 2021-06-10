@@ -66,7 +66,6 @@ User
   Validações:
 
 - A data de fabricação (manufacturingDate) deve ser maior que a data de validade (expirationDate)
-- O Preço do produto (price) deverá ser registrado com 2 casas decimais, Exemplo: 120.00
 - A listagem de produtos deve permitir ordenação por campos e com paginação contendo 10 produtos por página;
 
   ### Regras de negócio
@@ -77,11 +76,27 @@ Diferenciais
 - Utilizar testes unitários e de integração;
 - Documentação dos endpoints da API (sweagger);
 
+# Infos adicionais
+
+## Docker
+
+docker run --name ger_produtos -e POSTGRES_PASSWORD=dynamox -d postgres
+
 # Referências
 
 ## Node
 
 https://nodejs.dev/learn/how-to-exit-from-a-nodejs-program
+
+# Mocha (Teste)
+
+https://mochajs.org/
+https://www.luiztools.com.br/post/tdd-como-criar-integration-tests-em-node-js-com-jest/
+
+# Postgres
+
+https://www.postgresql.org/docs/9.1/sql-createtable.html
+https://www.postgresqltutorial.com/postgresql-create-table/
 
 ### jwt (Login)
 
@@ -90,3 +105,7 @@ https://www.luiztools.com.br/post/autenticacao-json-web-token-jwt-em-nodejs/
 ## Documentação (api)
 
 https://medium.com/swlh/automatic-api-documentation-in-node-js-using-swagger-dd1ab3c78284
+
+## Docker
+
+https://hub.docker.com/_/postgres/

@@ -2,14 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
-app.use(bodyParser.json());
 const app = express();
-
-//Definição de rotas
-let routerInfo = require("../routes/info");
+app.use(bodyParser.json());
 
 //Rotas
-app.use("/info", routerInfo);
+app.use("/info", require("../routes/info"));
+app.use("/product", require("../routes/productRouter"));
+app.use("/user", require("../routes/userRouter"));
 
 //Iniciado serviço
 const server = function () {
