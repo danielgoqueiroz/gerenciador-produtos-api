@@ -1,6 +1,6 @@
 const getConnection = require("./dbConnect");
 
-class CategoryDao {
+class CategoryDB {
   constructor() {
     this.client;
   }
@@ -109,4 +109,4 @@ class CategoryDao {
   }
 }
 
-module.exports = CategoryDao;
+module.exports = CategoryDB;

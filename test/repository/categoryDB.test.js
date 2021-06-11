@@ -1,5 +1,5 @@
 const helper = require("../test.helper");
-const CategoryDao = require("../../app/db/categoryDB");
+const CategoryDB = require("../../app/db/categoryDB");
 const expect = require("chai").expect;
 const Category = require("../../app/model/Category");
 const { assert } = require("chai");
@@ -9,7 +9,7 @@ let categoryDao;
 beforeEach(async function () {
   await helper.resetDb();
   await helper.createDB();
-  this.categoryDao = new CategoryDao();
+  this.categoryDao = new CategoryDB();
 });
 
 describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de categoria", async function () {
