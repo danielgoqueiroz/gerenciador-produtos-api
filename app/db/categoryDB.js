@@ -24,6 +24,24 @@ class CategoryDao {
     }
   }
 
+  async getByDescription(description) {
+    if (description === undefined || description.length < 3) {
+      throw new Error("Descrição inválida");
+    }
+
+    this.client = await getConnection();
+    try {
+      const categories = await this.client.query(
+        `SELECT * FROM \"CATEGORY\" WHERE description = '${description}'`
+      );
+      return categories.rows.length == 1 ? categories.rows[0] : null;
+    } catch (err) {
+      throw new Error("Erro ao buscar item do banco de dados");
+    } finally {
+      this.client.end();
+    }
+  }
+
   async delete(id) {
     const isValid = new Number(id);
     if (isValid === undefined) {
@@ -71,6 +89,11 @@ class CategoryDao {
   }
 
   async save(category) {
+    const categoryExist = await this.getByDescription(category.description);
+    if (categoryExist != null) {
+      throw new Error("Categoria já cadastrada");
+    }
+
     this.client = await getConnection();
 
     try {

@@ -2,16 +2,14 @@ const helper = require("../test.helper");
 const CategoryDao = require("../../app/db/categoryDB");
 const expect = require("chai").expect;
 const Category = require("../../app/model/Category");
+const { assert } = require("chai");
 
 let categoryDao;
 
-before(async function () {
+beforeEach(async function () {
   await helper.resetDb();
   await helper.createDB();
   this.categoryDao = new CategoryDao();
-});
-after(function () {
-  this.categoryDao.client.end();
 });
 
 describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de categoria", async function () {
@@ -24,6 +22,21 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
     expect(categorySaved).to.be.not.null;
     expect(categorySaved.categoryid).to.be.not.null;
     expect(categorySaved.description).to.be.equal(newCategory.description);
+  });
+
+  it("(store) Não deve cadastrar duas categorias com mesmo nome", async function () {
+    let expectedCategories = await this.categoryDao.getList();
+    const category = new Category(null, "Eletrônico");
+    await this.categoryDao.save(category);
+    expectedCategories = await this.categoryDao.getList();
+    try {
+      await this.categoryDao.save(category);
+    } catch (err) {
+      expect(err).to.be.not.null;
+      expect(err.message).to.be.equal("Categoria já cadastrada");
+    }
+    const secondCheckCategories = await this.categoryDao.getList();
+    expect(secondCheckCategories.length).to.be.equal(1);
   });
 
   it("(update) Atualizar categoria", async function () {
@@ -47,7 +60,7 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
 
     const categories = await this.categoryDao.getList();
 
-    expect(categories.length > 3).to.be.true;
+    expect(categories.length === 3).to.be.true;
   });
 
   it("(delete) Remover categoria", async function () {
@@ -75,6 +88,22 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
       new Category(null, "Eletrônico")
     );
     const categoryFinded = await this.categoryDao.getOne(categorySaved.id);
+
+    expect(categoryFinded).not.to.be.null;
+
+    const categoryValited = Object.assign(Category, categoryFinded);
+    expect(categoryValited).not.to.be.null;
+    expect(categoryValited.description).to.be.equal(categorySaved.description);
+  });
+
+  it("(show) Exibir categoria por nome", async function () {
+    await this.categoryDao.save(new Category(null, "Lazer"));
+    const categorySaved = await this.categoryDao.save(
+      new Category(null, "Eletrônico")
+    );
+    const categoryFinded = await this.categoryDao.getByDescription(
+      categorySaved.description
+    );
 
     expect(categoryFinded).not.to.be.null;
 

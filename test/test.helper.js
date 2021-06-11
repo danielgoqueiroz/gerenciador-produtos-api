@@ -8,7 +8,6 @@ const { throws } = require("should");
 const path = require("path");
 
 const eraserDB = async function () {
-  console.info("Apagando dados do DB");
   let client;
   try {
     client = await getConnection();
@@ -20,13 +19,11 @@ const eraserDB = async function () {
   } catch (err) {
     console.error("Erro ao apagar dados do DB", err);
   } finally {
-    console.info("DB apagado com sucesso.");
     client.end();
   }
 };
 
 const createDB = async function () {
-  console.info("Criando tabelas do BD");
   let client;
   try {
     const pathFile = path.resolve("resources/db/001_create_tables.sql");
@@ -39,7 +36,6 @@ const createDB = async function () {
   } catch (err) {
     console.error("Erro ao criar BD", err);
   } finally {
-    console.info("Tabelas criadas com sucesso.");
     client.end();
   }
 };
