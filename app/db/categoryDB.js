@@ -5,6 +5,26 @@ class CategoryDB {
     this.client;
   }
 
+  async save(category) {
+    const categoryExist = await this.getByDescription(category.description);
+    if (categoryExist != null) {
+      throw new Error("Categoria já cadastrada");
+    }
+
+    this.client = await getConnection();
+
+    try {
+      const response = await this.client.query(
+        `INSERT INTO \"CATEGORY\" (description) VALUES ('${category.description}') RETURNING *`
+      );
+      return response.rows[0];
+    } catch (err) {
+      throw new Error("Erro ao acessar db de categoria.", err);
+    } finally {
+      this.client.end();
+    }
+  }
+
   async getOne(id) {
     const isValid = new Number(id);
 
@@ -79,26 +99,6 @@ class CategoryDB {
     try {
       const response = await this.client.query(
         `UPDATE \"CATEGORY\" SET description = '${category.description}' where id = ${category.id} RETURNING *`
-      );
-      return response.rows[0];
-    } catch (err) {
-      throw new Error("Erro ao acessar db de categoria.", err);
-    } finally {
-      this.client.end();
-    }
-  }
-
-  async save(category) {
-    const categoryExist = await this.getByDescription(category.description);
-    if (categoryExist != null) {
-      throw new Error("Categoria já cadastrada");
-    }
-
-    this.client = await getConnection();
-
-    try {
-      const response = await this.client.query(
-        `INSERT INTO \"CATEGORY\" (description) VALUES ('${category.description}') RETURNING *`
       );
       return response.rows[0];
     } catch (err) {

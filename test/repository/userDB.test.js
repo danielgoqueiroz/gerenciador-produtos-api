@@ -12,28 +12,33 @@ beforeEach(async function () {
 });
 
 describe("[ Banco de dados - User ] - Deve validar regras de persistência de usuários", async function () {
-  it.only("(store) Deve cadastrar usuário", async function () {
+  it("(store) Deve cadastrar usuário", async function () {
+    const initialUsers = await this.userDB.getList();
+
     const newUser = new User("Usuário teste", "senha123456");
     const userSaved = await this.userDB.save(newUser);
 
     expect(userSaved).to.not.be.null;
     expect(userSaved.id).to.not.be.null;
+
+    const afterSavedUsers = await this.userDB.getList();
+
+    expect(afterSavedUsers.length - 1).to.be.equal(initialUsers.length);
   });
 
-  it("(login) Login de usuário retornando um bearer token para utilizar nas chamadas abaixo", async function () {
-    const response = await client.query("SELECT * FROM USER");
+  it("(login) Deve buscar usuário por nome e password", async function () {
+    const newUser = new User("Usuário teste", "senha123456");
+    const userSaved = await this.userDB.save(newUser);
 
-    const result = await client.query(`SELECT table_name
-        FROM information_schema.tables
-        WHERE table_schema = 'public'
-        ORDER BY table_name;`);
+    expect(userSaved).to.not.be.null;
+    expect(userSaved.id).to.not.be.null;
 
-    expect(result.rows.length).to.be.equal(3);
-    const tables = result.rows.map((item) => {
-      return item.table_name;
-    });
-    expect(tables.includes("USER")).to.be.true;
-    expect(tables.includes("CATEGORY")).to.be.true;
-    expect(tables.includes("PRODUCT")).to.be.true;
+    const isCredentialValid = await this.userDB.isCredentialValid(
+      newUser.name,
+      newUser.password
+    );
+
+    expect(isCredentialValid).to.not.be.null;
+    expect(isCredentialValid).to.be.true;
   });
 });

@@ -6,7 +6,6 @@ CREATE TABLE "CATEGORY"(
 
 CREATE TABLE "PRODUCT"(
     id INT generated always as IDENTITY,
-    description VARCHAR(30) not null,
     category_id bigint,
     name varchar(85),
     manufacturingDate  TIMESTAMP ,

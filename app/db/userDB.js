@@ -5,9 +5,23 @@ class UserDB {
     this.client;
   }
 
+  async isCredentialValid(name, password) {
+    this.client = await getConnection();
+    try {
+      const response = await this.client.query(
+        `SELECT * FROM \"USER\" WHERE name = '${name}' AND password = '${password}';`
+      );
+      return response.rowCount == 1;
+    } catch (err) {
+      throw new Error("Erro ao acessar db de usuário.", err);
+    } finally {
+      this.client.end();
+    }
+  }
+
   async save(user) {
-    const isExists = await this.getByName(user.name);
-    if (isExists != null) {
+    const userLoad = await this.getByName(user.name);
+    if (userLoad) {
       throw new Error("Usuário já cadastrada");
     }
 
@@ -15,7 +29,7 @@ class UserDB {
 
     try {
       const response = await this.client.query(
-        `INSERT INTO \"USER\" (name, password) VALUES ('${user.name}') RETURNING *`
+        `INSERT INTO \"USER\" (name, password) VALUES ('${user.name}', '${user.password}') RETURNING *`
       );
       return response.rows[0];
     } catch (err) {

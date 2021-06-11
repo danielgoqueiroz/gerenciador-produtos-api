@@ -25,3 +25,5 @@
 //     });
 //   });
 // });
+
+// Login de usuário retornando um bearer token para utilizar nas chamadas abaixo

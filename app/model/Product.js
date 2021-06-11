@@ -1,6 +1,5 @@
 class Product {
   constructor(
-    id,
     categoryId,
     name,
     manufacturingDate,
@@ -8,7 +7,6 @@ class Product {
     expirationDate,
     price
   ) {
-    this.id = id;
     this.categoryId = categoryId;
     this.name = name;
     this.manufacturingDate = manufacturingDate;
