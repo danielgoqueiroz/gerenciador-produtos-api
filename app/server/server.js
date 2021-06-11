@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 //Rotas
-app.use("/info", require("../routes/info"));
+app.use("/info", require("../routes/infoRouter"));
 app.use("/product", require("../routes/productRouter"));
 app.use("/user", require("../routes/userRouter"));
 

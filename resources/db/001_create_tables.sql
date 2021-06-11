@@ -1,20 +1,27 @@
-CREATE TABLE [IF NOT EXISTS] user (
-   id bignumber column_contraint,
-   name biginteger,
-   password string,
+CREATE TABLE "CATEGORY"(
+    id INT GENERATED ALWAYS AS IDENTITY,
+    description VARCHAR(30) not null,
+    PRIMARY KEY(id)
 );
 
-CREATE TABLE [IF NOT EXISTS] category (
-   id bignumber,
-   description string
+CREATE TABLE "PRODUCT"(
+    id INT generated always as IDENTITY,
+    description VARCHAR(30) not null,
+    category_id bigint,
+    name varchar(85),
+    manufacturingDate  TIMESTAMP ,
+    perishableProduct boolean,
+    expirationDate TIMESTAMP ,
+    price bigint,
+    primary KEY(id),
+    CONSTRAINT fk_category
+    	FOREIGN KEY(category_id) 
+	  		REFERENCES "CATEGORY"(id)
 );
 
-CREATE TABLE [IF NOT EXISTS] product (
-   id
-   categoryId
-   name
-   manufacturingDate
-   perishableProduct
-   expirationDate
-   price
+CREATE TABLE "USER"(
+    id INT GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(30) not null,
+    password VARCHAR(30) not null,
+    primary key(id)
 );

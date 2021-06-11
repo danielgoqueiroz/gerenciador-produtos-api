@@ -3,6 +3,30 @@
 Gerenciador de produtos, comentários e categorias, com controle e
 autenticação de usuários.
 
+## Pré-requisitos
+
+Node v14.5.0
+Npm 6.14.5
+Docker
+
+## Configuração
+
+### Docker
+
+Exceutar comandos para iniciar banco de dados:
+
+docker run --name ger_produtos -p 5432:5432 -e POSTGRES_PASSWORD=senha123 -d postgres
+
+docker exec -it ger_produtos bash
+
+su postgres
+
+psql
+
+\conninfo
+
+\q
+
 ### O Projeto
 
 Desenvolver uma API RESTful utilizando nodejs e banco de dados relacional.
@@ -108,4 +132,4 @@ https://medium.com/swlh/automatic-api-documentation-in-node-js-using-swagger-dd1
 
 ## Docker
 
-https://hub.docker.com/_/postgres/
+https://hub.dockedpcr.com/_/postgres/

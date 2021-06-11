@@ -1,3 +1,7 @@
+const should = require("should");
+const request = require("request");
+const expect = require("chai").expect;
+
 describe("Testes de usuário", function () {
   it("Cadastrar usuário: Dado dados válidos de usuário, deve salvar novo usuário.", function (done) {
     const url = { url: `http://${process.env.HOST}:${process.env.PORT}/user` };
