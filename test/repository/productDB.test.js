@@ -47,8 +47,8 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
     expect(product).to.not.be.null;
     expect(product.id).to.not.be.null;
 
-    const productToUpdate = product
-    productToUpdate.name = 'Tablet';
+    const productToUpdate = product;
+    productToUpdate.name = "Tablet";
 
     await this.productDB.update(productToUpdate);
     const productUpdated = await this.productDB.getById(product.id);
@@ -59,49 +59,116 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
     expect(productUpdated.id).to.be.equal(product.id);
     expect(productUpdated.name).to.be.equal("Tablet");
     expect(productUpdated.expirationDate).to.be.equal(product.expirationDate);
-    expect(productUpdated.manufacturingDate).to.be.equal(product.manufacturingDate);
-
+    expect(productUpdated.manufacturingDate).to.be.equal(
+      product.manufacturingDate
+    );
   });
 
-  it("(delete) Remover produto", async function () {});
+  it("(delete) Remover produto", async function () {
+    const category = new Category("Eletrônico");
+    const categoryDb = await this.categoryDB.save(category);
+    const categoryId = categoryDb.id;
+
+    const manufacturingDate = new Date(Date.parse("2020-01-01"));
+    const expirationDate = new Date(Date.parse("2022-06-15"));
+
+    const prod1 = new Product(
+      categoryId,
+      "Celular",
+      manufacturingDate,
+      false,
+      expirationDate,
+      120
+    );
+    const product1Saved = await this.productDB.save(prod1);
+  });
   it("(show) Exibir produto", async function () {
-    const product  =  await savedProduct(this.categoryDB, this.productDB)
-    const productLoaded = await this.productDB.getById(product.id);
-    expect(productLoaded).to.be.not.null;
-    expect(JSON.stringify(productLoaded), `\nE: ${JSON.stringify(product)} \nR: ${JSON.stringify(productLoaded)}`).to.be.equal(JSON.stringify(product));
+    const initialProducts = await this.productDB.getList();
 
+    const category = new Category("Eletrônico");
+    const categoryDb = await this.categoryDB.save(category);
+    const categoryId = categoryDb.id;
+
+    const manufacturingDate = new Date(Date.parse("2020-01-01"));
+    const expirationDate = new Date(Date.parse("2022-06-15"));
+
+    const prod1 = new Product(
+      categoryId,
+      "Celular",
+      manufacturingDate,
+      false,
+      expirationDate,
+      120
+    );
+    const productSaved = await this.productDB.save(prod1);
+
+    const afterSavedProducts = await this.productDB.getList();
+
+    expect(initialProducts.length).to.be.equal(afterSavedProducts.length - 1);
+
+    const productLoaded = await this.productDB.getById(productSaved.id);
+
+    expect(productLoaded).to.be.not.null;
+    expect(productLoaded.id).to.be.not.null;
+    expect(productLoaded.categoryId).to.be.not.null;
+    expect(productLoaded.name).to.be.not.null;
+    expect(productLoaded.manufacturingDate).to.be.not.null;
+    expect(productLoaded.perishableProduct).to.be.not.null;
+    expect(productLoaded.expirationDate).to.be.not.null;
+    expect(productLoaded.price).to.be.not.null;
   });
 
-  it.only("(index) Listar produtos", async function () {
-    const prod = await savedProduct(this.categoryDB, this.productDB);
-    prod.id = null;
-    prod.name = "Tablet";
-    const product = await this.productDB.save(prod);
+  it("(index) Listar produtos", async function () {
+    const category = new Category("Eletrônico");
+    const categoryDb = await this.categoryDB.save(category);
+    const categoryId = categoryDb.id;
+
+    const manufacturingDate = new Date(Date.parse("2020-01-01"));
+    const expirationDate = new Date(Date.parse("2022-06-15"));
+
+    const prod1 = new Product(
+      categoryId,
+      "Celular",
+      manufacturingDate,
+      false,
+      expirationDate,
+      120
+    );
+    const product1Saved = await this.productDB.save(prod1);
+
+    const prod2 = new Product(
+      categoryId,
+      "Tablet",
+      manufacturingDate,
+      false,
+      expirationDate,
+      240
+    );
+    const product2Saved = await this.productDB.save(prod2);
 
     const products = await this.productDB.getList();
-    expect(products).to.be.an('array')
-    expect(products.length).to.be.equal(2)
-
+    expect(products).to.be.an("array");
+    expect(products.length).to.be.equal(2);
   });
   it("■ Filtrar por categorias", async function () {});
 });
 
 // Support
 async function savedProduct(categoryDB, productDB) {
-    const category = new Category("Eletrônico");
-    const categorySaved = await categoryDB.save(category);
-    expect(categorySaved).to.not.be.null;
-    
-    const manufacturingDate = new Date(Date.parse("2020-01-01"));
-    const expirationDate = new Date(Date.parse("2022-06-15"));
-    const newProduct = new Product(
-      categorySaved.id,
-      "Celular",
-      manufacturingDate.getTime(),
-      false,
-      expirationDate.getTime(),
-      120.01
-    );
-    const product = await productDB.save(newProduct);
-    return product
+  const category = new Category("Eletrônico");
+  const categorySaved = await categoryDB.save(category);
+  expect(categorySaved).to.not.be.null;
+
+  const manufacturingDate = new Date(Date.parse("2020-01-01"));
+  const expirationDate = new Date(Date.parse("2022-06-15"));
+  const newProduct = new Product(
+    categorySaved.id,
+    "Celular",
+    manufacturingDate.getTime(),
+    false,
+    expirationDate.getTime(),
+    120.01
+  );
+  const product = await productDB.save(newProduct);
+  return product;
 }

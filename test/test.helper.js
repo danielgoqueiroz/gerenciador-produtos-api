@@ -40,9 +40,8 @@ const createDB = async function () {
   }
 };
 
-before(function (done) {
+before(function () {
   server();
-  done();
 });
 
 module.exports = {

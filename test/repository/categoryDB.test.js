@@ -14,7 +14,7 @@ beforeEach(async function () {
 
 describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de categoria", async function () {
   it("(store) Cadastrar categoria", async function () {
-    const newCategory = new Category(null, "Eletrônico");
+    const newCategory = new Category("Eletrônico");
     const categorySaved = Object.assign(
       Category,
       await this.categoryDao.save(newCategory)
@@ -26,7 +26,7 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
 
   it("(store) Não deve cadastrar duas categorias com mesmo nome", async function () {
     let expectedCategories = await this.categoryDao.getList();
-    const category = new Category(null, "Eletrônico");
+    const category = new Category("Eletrônico");
     await this.categoryDao.save(category);
     expectedCategories = await this.categoryDao.getList();
     try {
@@ -40,7 +40,7 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
   });
 
   it("(update) Atualizar categoria", async function () {
-    const initialCategory = new Category(null, "Eletronico");
+    const initialCategory = new Category("Eletronico");
     let categorySaved = await this.categoryDao.save(initialCategory);
     categorySaved = Object.assign(Category, categorySaved);
     expect(categorySaved.description).to.be.equal(initialCategory.description);
@@ -54,9 +54,9 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
     expect(updatedCategory.description).to.be.equal(categorySaved.description);
   });
   it("(index) Listar categorias", async function () {
-    await this.categoryDao.save(new Category(null, "Eletrônico"));
-    await this.categoryDao.save(new Category(null, "Jogos"));
-    await this.categoryDao.save(new Category(null, "Lazer"));
+    await this.categoryDao.save(new Category("Eletrônico"));
+    await this.categoryDao.save(new Category("Jogos"));
+    await this.categoryDao.save(new Category("Lazer"));
 
     const categories = await this.categoryDao.getList();
 
@@ -65,11 +65,11 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
 
   it("(delete) Remover categoria", async function () {
     const categoryToDelete = await this.categoryDao.save(
-      new Category(null, "Eletrônico")
+      new Category("Eletrônico")
     );
 
-    await this.categoryDao.save(new Category(null, "Jogos"));
-    await this.categoryDao.save(new Category(null, "Lazer"));
+    await this.categoryDao.save(new Category("Jogos"));
+    await this.categoryDao.save(new Category("Lazer"));
 
     const initialCategories = await this.categoryDao.getList();
 
@@ -83,9 +83,9 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
   });
 
   it("(show) Exibir categoria", async function () {
-    await this.categoryDao.save(new Category(null, "Lazer"));
+    await this.categoryDao.save(new Category("Lazer"));
     const categorySaved = await this.categoryDao.save(
-      new Category(null, "Eletrônico")
+      new Category("Eletrônico")
     );
     const categoryFinded = await this.categoryDao.getOne(categorySaved.id);
 
@@ -97,9 +97,9 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
   });
 
   it("(show) Exibir categoria por nome", async function () {
-    await this.categoryDao.save(new Category(null, "Lazer"));
+    await this.categoryDao.save(new Category("Lazer"));
     const categorySaved = await this.categoryDao.save(
-      new Category(null, "Eletrônico")
+      new Category("Eletrônico")
     );
     const categoryFinded = await this.categoryDao.getByDescription(
       categorySaved.description
