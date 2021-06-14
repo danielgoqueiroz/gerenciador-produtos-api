@@ -8,6 +8,26 @@ class ProductDB {
     this.client;
   }
 
+  async getById(id){
+    try {
+      new Number(id)
+    } catch {
+      throw new Error("O valor do id deve ser numérico.")
+    }
+
+    this.client = await getConnection();
+
+    try {
+      const products = await this.client.query(`SELECT * FROM \"PRODUCT\" WHERE id = ${id}`);
+      return products.rows.length == 1 ? products.rows[0] : null;
+    } catch (err) {
+      throw new Error("Erro ao buscar produtos no banco de dados.", err);
+    } finally {
+      this.client.end();
+    }
+    
+  }
+
   async save(product) {
     const productLoad = await this.getByName(product.name);
     if (productLoad) {
@@ -107,15 +127,21 @@ class ProductDB {
     }
   }
 
-  async update(products) {
-    if (!produtot.id) {
+  async update(product) {
+    if (!product.id) {
       throw new Error("O id é obrigatório para realização do update");
     }
     this.client = await getConnection();
     try {
-      const response = await this.client.query(
-        `UPDATE \"PRODUCT\" SET name = '${products.name}' where id = ${products.id} RETURNING *`
-      );
+      const sql = `UPDATE \"PRODUCT\" SET 
+      name = '${product.name}',
+      manufacturingDate = ${product.manufacturingdate.getTime()},
+      perishableProduct = ${product.perishableproduct},
+      expirationDate =  ${product.expirationdate.getTime()},
+      price = ${product.price}
+  where id = ${product.id}`
+      const response = await this.client.query(sql);
+
       return response.rows[0];
     } catch (err) {
       throw new Error("Erro ao acessar db de produto.", err);

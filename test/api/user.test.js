@@ -1,4 +1,3 @@
-// const should = require("should");
 // const request = require("request");
 // const expect = require("chai").expect;
 
@@ -26,4 +25,4 @@
 //   });
 // });
 
-// Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
+// // Login de usuário retornando um bearer token para utilizar nas chamadas abaixo

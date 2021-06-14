@@ -13,7 +13,7 @@ Docker
 
 ### Docker
 
-Exceutar comandos para iniciar banco de dados:
+Executar comandos para iniciar banco de dados:
 
 docker run --name ger_produtos -p 5432:5432 -e POSTGRES_PASSWORD=senha123 -d postgres
 
