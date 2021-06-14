@@ -45,9 +45,9 @@ class ProductDB {
           price
           ) VALUES (
               '${product.name}', 
-              to_timestamp(${product.manufacturingDate}), 
+              to_timestamp(${new Date(product.manufacturingDate).getTime() /1000}), 
               ${product.perishableProduct}, 
-              to_timestamp(${product.expirationDate}), 
+              to_timestamp(${new Date(product.expirationDate).getTime() /1000}), 
               ${product.price}
               ) RETURNING *;`;
 
@@ -135,9 +135,9 @@ class ProductDB {
     try {
       const sql = `UPDATE \"PRODUCT\" SET 
       name = '${product.name}',
-      manufacturingDate = ${product.manufacturingdate.getTime()},
+      manufacturingDate = to_timestamp(${new Date(product.manufacturingdate).getTime() / 1000}),
       perishableProduct = ${product.perishableproduct},
-      expirationDate =  ${product.expirationdate.getTime()},
+      expirationDate =  to_timestamp(${new Date(product.expirationdate).getTime() /1000}),
       price = ${product.price}
   where id = ${product.id}`
       const response = await this.client.query(sql);

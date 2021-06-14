@@ -5,9 +5,6 @@ const expect = require("chai").expect;
 const Product = require("../../app/model/Product");
 const Category = require("../../app/model/Category");
 
-let productDB;
-let categoryDB;
-
 beforeEach(async function () {
   await helper.resetDb();
   await helper.createDB();
@@ -44,7 +41,7 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
     expect(afterSavedProducts.length - 1).to.be.equal(initialProducts.length);
   });
 
-  it.only("(update) Atualizar produto", async function () {
+  it("(update) Atualizar produto", async function () {
     const product = await savedProduct(this.categoryDB, this.productDB);
 
     expect(product).to.not.be.null;
@@ -74,11 +71,22 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
     expect(JSON.stringify(productLoaded), `\nE: ${JSON.stringify(product)} \nR: ${JSON.stringify(productLoaded)}`).to.be.equal(JSON.stringify(product));
 
   });
-  it("(index) Listar produtos", async function () {});
+
+  it.only("(index) Listar produtos", async function () {
+    const prod = await savedProduct(this.categoryDB, this.productDB);
+    prod.id = null;
+    prod.name = "Tablet";
+    const product = await this.productDB.save(prod);
+
+    const products = await this.productDB.getList();
+    expect(products).to.be.an('array')
+    expect(products.length).to.be.equal(2)
+
+  });
   it("■ Filtrar por categorias", async function () {});
 });
 
-
+// Support
 async function savedProduct(categoryDB, productDB) {
     const category = new Category("Eletrônico");
     const categorySaved = await categoryDB.save(category);
