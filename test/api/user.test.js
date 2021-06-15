@@ -2,41 +2,36 @@ const request = require("request");
 const expect = require("chai").expect;
 const server = require("../../app/server/server");
 const User = require("../../app/model/User");
+const axios = require("axios");
 
 describe("Testes de usuário", function (done) {
-  it.only("Cadastrar usuário: Dado dados válidos de usuário, deve salvar novo usuário.", function (done) {
+  it("Cadastrar usuário: Dado dados válidos de usuário, deve salvar novo usuário.", function () {
     const user = new User("Teste", "senha123");
     const url = `http://${process.env.HOST}:${process.env.PORT}/user`;
 
     request.post(url, { json: user }, (error, res, body) => {
-      console.log(res);
-    });
-
-    // axios
-    //   .post(url, user)
-    //   .then(function (res) {
-    //     expect(res.statusCode).to.equal(201);
-    //     const userSaved = response.body;
-    //     expect(userSaved.id).to.not.be.null;
-    //     expect(userSaved.name).to.not.be.null;
-    //     expect(userSaved.password).to.not.be.null;
-    //   })
-    //   .catch(function (err) {
-    //     console.log(err);
-    //   });
-    done();
-  });
-});
-
-describe("Testes de login", function () {
-  it("Login: Dado um usuário válido, deve gerar token do tipo bearer.", function () {
-    const url = { url: `http://${process.env.HOST}:${process.env.PORT}/login` };
-
-    request.post(url, function (error, response, body) {
-      expect(response.statusCode).to.equal(200);
-      expect(response.body).to.equal("Servidor ON.");
+      expect(res.statusCode).to.be.equal(201);
+      expect(res.body).to.be.not.null;
+      expect(res.body.message).to.be.equal("Usuário criado");
     });
   });
 });
 
-// Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
+describe("Testes de login", async function () {
+  it("Login: Dado um usuário válido, deve gerar token do tipo bearer.", async function () {
+    this.timeout(10000);
+    const user = new User("Usuario Teste", "teste123");
+    const url = `http://${process.env.HOST}:${process.env.PORT}/user/login`;
+
+    const result = await axios
+      .post(url, user)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {});
+    expect(result.status).to.be.equal(200);
+    expect(result.data.token).to.be.not.null;
+    expect(result.data.token).to.be.an("string");
+    expect(result.data.token.includes("bearer ")).to.be.true;
+  });
+});

@@ -24,3 +24,8 @@ CREATE TABLE "USER"(
     password VARCHAR(30) not null,
     primary key(id)
 );
+
+INSERT INTO "USER" (name, password) VALUES ('Usuario Teste', 'teste123');
+INSERT INTO "CATEGORY" (  description ) VALUES ('Eletrônico');
+INSERT INTO "PRODUCT" (  category_id,   name,  manufacturingDate,  perishableProduct,  expirationDate,  price  ) VALUES (      1,      'Tv',       to_timestamp(1577836800),       false,       to_timestamp(1655251200),       1200.01      );
+INSERT INTO "PRODUCT" (  category_id,   name,  manufacturingDate,  perishableProduct,  expirationDate,  price  ) VALUES (      1,      'Teclado',       to_timestamp(1577836800),       false,       to_timestamp(1655251200),       99.01      );

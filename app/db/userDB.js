@@ -8,10 +8,9 @@ class UserDB {
   async isCredentialValid(name, password) {
     this.client = await getConnection();
     try {
-      const response = await this.client.query(
-        `SELECT * FROM \"USER\" WHERE name = '${name}' AND password = '${password}';`
-      );
-      return response.rowCount == 1;
+      const sql = `SELECT * FROM \"USER\" WHERE NAME = '${name}' AND PASSWORD = '${password}';`;
+      const response = await this.client.query(sql);
+      return response.rows[0];
     } catch (err) {
       throw new Error("Erro ao acessar db de usuário.", err);
     } finally {
