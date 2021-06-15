@@ -1,17 +1,17 @@
 class Product {
   constructor(
-    categoryId,
+    category_id,
     name,
-    manufacturingDate,
-    perishableProduct,
-    expirationDate,
+    manufacturing_date,
+    perishable_product,
+    expiration_date,
     price
   ) {
-    this.categoryId = categoryId;
+    this.category_id = category_id;
     this.name = name;
-    this.manufacturingDate = manufacturingDate;
-    this.perishableProduct = perishableProduct;
-    this.expirationDate = expirationDate;
+    this.manufacturing_date = manufacturing_date;
+    this.perishable_product = perishable_product;
+    this.expiration_date = expiration_date;
     this.price = price;
   }
   validate() {

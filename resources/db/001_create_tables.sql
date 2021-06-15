@@ -8,9 +8,9 @@ CREATE TABLE "PRODUCT"(
     id INT generated always as IDENTITY,
     category_id bigint,
     name varchar(85),
-    manufacturingDate  TIMESTAMP ,
-    perishableProduct boolean,
-    expirationDate TIMESTAMP ,
+    manufacturing_date  TIMESTAMP ,
+    perishable_product boolean,
+    expiration_date TIMESTAMP ,
     price bigint,
     primary KEY(id),
     CONSTRAINT fk_category
@@ -27,5 +27,5 @@ CREATE TABLE "USER"(
 
 INSERT INTO "USER" (name, password) VALUES ('Usuario Teste', 'teste123');
 INSERT INTO "CATEGORY" (  description ) VALUES ('Eletrônico');
-INSERT INTO "PRODUCT" (  category_id,   name,  manufacturingDate,  perishableProduct,  expirationDate,  price  ) VALUES (      1,      'Tv',       to_timestamp(1577836800),       false,       to_timestamp(1655251200),       1200.01      );
-INSERT INTO "PRODUCT" (  category_id,   name,  manufacturingDate,  perishableProduct,  expirationDate,  price  ) VALUES (      1,      'Teclado',       to_timestamp(1577836800),       false,       to_timestamp(1655251200),       99.01      );
+INSERT INTO "PRODUCT" (  category_id,   name,  manufacturing_date,  perishable_product,  expiration_date,  price  ) VALUES (      1,      'Tv',       to_timestamp(1577836800),       false,       to_timestamp(1655251200),       1200.01      );
+INSERT INTO "PRODUCT" (  category_id,   name,  manufacturing_date,  perishable_product,  expiration_date,  price ) VALUES (      1,      'Teclado',       to_timestamp(1577836800),       false,       to_timestamp(1655251200),       99.01      );

@@ -42,19 +42,19 @@ class ProductDB {
       const query = `INSERT INTO \"PRODUCT\" (
           category_id, 
           name,
-          manufacturingDate,
-          perishableProduct,
-          expirationDate,
+          manufacturing_date,
+          perishable_product,
+          expiration_date,
           price
           ) VALUES (
-              ${product.categoryId},
+              ${product.category_id},
               '${product.name}', 
               to_timestamp(${
-                new Date(product.manufacturingDate).getTime() / 1000
+                new Date(product.manufacturing_date).getTime() / 1000
               }), 
-              ${product.perishableProduct}, 
+              ${product.perishable_product}, 
               to_timestamp(${
-                new Date(product.expirationDate).getTime() / 1000
+                new Date(product.expiration_date).getTime() / 1000
               }), 
               ${product.price}
               ) RETURNING *;`;
@@ -143,15 +143,15 @@ class ProductDB {
     try {
       const sql = `UPDATE \"PRODUCT\" SET 
       name = '${product.name}',
-      manufacturingDate = to_timestamp(${
-        new Date(product.manufacturingdate).getTime() / 1000
+      manufacturing_date = to_timestamp(${
+        new Date(product.manufacturing_date).getTime() / 1000
       }),
-      perishableProduct = ${product.perishableproduct},
-      expirationDate =  to_timestamp(${
-        new Date(product.expirationdate).getTime() / 1000
+      perishable_product = ${product.perishable_product},
+      expiration_date =  to_timestamp(${
+        new Date(product.expiration_date).getTime() / 1000
       }),
       price = ${product.price}
-  where id = ${product.id}`;
+  where id = ${product.id} RETURNING *;`;
       const response = await this.client.query(sql);
 
       return response.rows[0];
