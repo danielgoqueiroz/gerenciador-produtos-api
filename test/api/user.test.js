@@ -14,6 +14,7 @@ describe("Testes de usuário", function (done) {
       expect(res.body).to.be.not.null;
       expect(res.body.message).to.be.equal("Usuário criado");
     });
+    
   });
 });
 
