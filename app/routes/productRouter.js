@@ -2,7 +2,6 @@ let express = require("express");
 let router = express.Router();
 const jwt = require("../jwt/jwt");
 const ProductDB = require("../db/productDB");
-const { text } = require("express");
 const productDB = new ProductDB();
 
 // // UPDATE Product

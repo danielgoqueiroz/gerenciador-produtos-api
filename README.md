@@ -1,48 +1,85 @@
+# Gerenciador de produtos
+
 ## Descrição
 
 Gerenciador de produtos, comentários e categorias, com controle e
 autenticação de usuários.
 
-## Pré-requisitos
+### O Projeto
 
-Node v14.5.0
-Npm 6.14.5
-Docker
+- Desenvolver uma API RESTful utilizando nodejs e banco de dados relacional.
+
+- Cada produto deve pertencer a uma categoria pré registrada no sistema.
+
+
+## Pré-requisitos
+Ambiente de desenvolvimento/Testes - 19.3 Tricia
+
+- Node v14.5.0: (https://nodejs.org/en/download/)
+- - Check versão com ```$ node --version```
+- Npm 6.14.5: (https://docs.npmjs.com/getting-started)
+- - Check versão com ```npm --version```
+- Docker 19.03.9 (https://docs.docker.com/engine/install/ubuntu/#installation-methods)
+- - Check versão com ```docker --version```
 
 ## Configuração
 
+Após instalação dos pré-requisitos básicos, configurar banco de dados:
+
 ### Docker
 
-Executar comandos para iniciar banco de dados:
+Comando de configuração de banco de dados (Linux).
 
-docker run --name ger_produtos -p 5432:5432 -e POSTGRES_PASSWORD=senha123 -d postgres
+```
+$ docker run --name ger_produtos -p 5432:5432 -e POSTGRES_PASSWORD=senha123 -d postgres
+$ docker exec -it ger_produtos bash```
+$ su postgres
+$ psql
+$ \conninfo
+$ \q
+```
 
-docker exec -it ger_produtos bash
+## Descrição de funcionalidades e modelagem
 
-su postgres
+### Login
 
-psql
+#### Funcionalidade
+- (login) Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
 
-\conninfo
+### Endpoint
 
-\q
+POST /user/login
 
-### Fechar processos node no windows
+Objeto body do request:
 
-### O Projeto
-
-Desenvolver uma API RESTful utilizando nodejs e banco de dados relacional.
-
-Cada produto deve pertencer a uma categoria pré registrada no sistema.
-
-Funcionalidades
+```
+{
+    name: string,
+    password: string
+}
+```
+response:
+{
+  auth: boolean,
+  token: string
+}
 
 ### Usuários (User)
 
-- (store) Cadastrar usuário
-- (login) Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
+#### Funcionalidade
 
-User
+- (store) Cadastrar usuário
+
+
+#### Endpoints
+
+GET /user
+GET /user/:id
+POST /user
+PUT /user/:id
+DELETE /user/id
+
+Objeto body do request (POST/PUT/DELETE):
 
 ```
 {
@@ -53,11 +90,23 @@ User
 
 ### Categorias (Category)
 
+#### Funcionalidades
+
 - (store) Cadastrar categoria
 - (update) Atualizar categoria
 - (delete) Remover categoria
 - (show) Exibir categoria
 - (index) Listar categorias
+
+#### Endpoints
+
+GET /category
+GET /category/:id
+POST /category
+PUT /category/:id
+DELETE /category/id
+
+Objeto body do request (POST/PUT/DELETE):
 
 ```
 {
@@ -68,6 +117,8 @@ User
 
 ### Produtos (Product)
 
+#### Funcionalidades
+
 - (store) Cadastrar produto
 - (update) Atualizar produto
 - (delete) Remover produto
@@ -77,61 +128,59 @@ User
 
   Exemplo de produto:
 
+#### Endpoints
+
+GET /product
+GET /product/:id
+POST /product
+PUT /product/:id
+DELETE /product/id
+
+Objeto body do request (POST/PUT/DELETE):
+
   ```
   {
-    "id": number,
+    "id": number,s
     "categoryId": number,
     "name": string,
-    "manufacturingDate": date, // Formatação yyyy-MM-ddTHH:mm:ss.SZ ex: 2020-07-27T12:55:33.000Z
+    "manufacturingDate": date,
     "perishableProduct": boolean,
     "expirationDate": date,
-    "price": int,
+    "price": numeric,
   }
   ```
 
-  Validações:
+## Regras de negócio
 
 - A data de fabricação (manufacturingDate) deve ser maior que a data de validade (expirationDate)
-- A listagem de produtos deve permitir ordenação por campos e com paginação contendo 10 produtos por página;
-
-  ### Regras de negócio
-
-Diferenciais
-
-- Deve atender as regras de validação informadas;
+- A listagem de produtos deve permitir ordenação por campos e com paginação contesndo 10 produtos por página;
 - Utilizar testes unitários e de integração;
 - Documentação dos endpoints da API (sweagger);
 
-# Infos adicionais
+## Referências
 
-## Docker
-
-docker run --name ger_produtos -e POSTGRES_PASSWORD=dynamox -d postgres
-
-# Referências
-
-## Node
+- Node
 
 https://nodejs.dev/learn/how-to-exit-from-a-nodejs-program
 
-# Mocha (Teste)
+- Mocha (Teste)
 
 https://mochajs.org/
 https://www.luiztools.com.br/post/tdd-como-criar-integration-tests-em-node-js-com-jest/
 
-# Postgres
+- Postgres
 
 https://www.postgresql.org/docs/9.1/sql-createtable.html
 https://www.postgresqltutorial.com/postgresql-create-table/
 
-### jwt (Login)
+- jwt (Login)
 
 https://www.luiztools.com.br/post/autenticacao-json-web-token-jwt-em-nodejs/
 
-## Documentação (api)
+- Documentação (api)
 
 https://medium.com/swlh/automatic-api-documentation-in-node-js-using-swagger-dd1ab3c78284
 
-## Docker
+- Docker
 
 https://hub.dockedpcr.com/_/postgres/
