@@ -14,17 +14,13 @@ beforeEach(async function () {
 
 describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de produtos", async function () {
   it("(store) Deve cadastrar produto", async function () {
-    const category = new Category("Eletrônico");
-    const categorySaved = await this.categoryDB.save(category);
-    expect(categorySaved).to.not.be.null;
-
-    const initialProducts = await this.productDB.getList();
+    const initialProducts = await this.productDB.getList(null, 0);
 
     const manufacturingDate = new Date(Date.parse("2020-01-01"));
     const expirationDate = new Date(Date.parse("2022-06-15"));
 
     const newProduct = new Product(
-      categorySaved.id,
+      1,
       "Celular",
       manufacturingDate.getTime(),
       false,
@@ -36,13 +32,13 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
     expect(ProductSaved).to.not.be.null;
     expect(ProductSaved.id).to.not.be.null;
 
-    const afterSavedProducts = await this.productDB.getList();
+    const afterSavedProducts = await this.productDB.getList(null, 0);
 
     expect(afterSavedProducts.length - 1).to.be.equal(initialProducts.length);
   });
 
   it("(update) Atualizar produto", async function () {
-    const product = await savedProduct(this.categoryDB, this.productDB);
+    const product = await this.productDB.getById(1);
 
     expect(product).to.not.be.null;
     expect(product.id).to.not.be.null;
@@ -65,48 +61,14 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
   });
 
   it("(delete) Remover produto", async function () {
-    const category = new Category("Eletrônico");
-    const categoryDb = await this.categoryDB.save(category);
-    const categoryId = categoryDb.id;
-
-    const manufacturingDate = new Date(Date.parse("2020-01-01"));
-    const expirationDate = new Date(Date.parse("2022-06-15"));
-
-    const prod1 = new Product(
-      categoryId,
-      "Celular",
-      manufacturingDate,
-      false,
-      expirationDate,
-      120
-    );
-    const product1Saved = await this.productDB.save(prod1);
+    const initialProducts = await this.productDB.getList(null, 0);
+    const deleted = await this.productDB.delete(initialProducts[0].id);
+    expect(deleted).to.be.true;
+    const afterDeleteProducts = await this.productDB.getList(null, 0);
+    expect(afterDeleteProducts.length).to.be.equal(initialProducts.length - 1);
   });
   it("(show) Exibir produto", async function () {
-    const initialProducts = await this.productDB.getList();
-
-    const category = new Category("Eletrônico");
-    const categoryDb = await this.categoryDB.save(category);
-    const categoryId = categoryDb.id;
-
-    const manufacturingDate = new Date(Date.parse("2020-01-01"));
-    const expirationDate = new Date(Date.parse("2022-06-15"));
-
-    const prod1 = new Product(
-      categoryId,
-      "Celular",
-      manufacturingDate,
-      false,
-      expirationDate,
-      120
-    );
-    const productSaved = await this.productDB.save(prod1);
-
-    const afterSavedProducts = await this.productDB.getList();
-
-    expect(initialProducts.length).to.be.equal(afterSavedProducts.length - 1);
-
-    const productLoaded = await this.productDB.getById(productSaved.id);
+    const productLoaded = await this.productDB.getById(1);
 
     expect(productLoaded).to.be.not.null;
     expect(productLoaded.id).to.be.not.null;
@@ -119,38 +81,15 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
   });
 
   it("(index) Listar produtos", async function () {
-    const category = new Category("Eletrônico");
-    const categoryDb = await this.categoryDB.save(category);
-    const categoryId = categoryDb.id;
-
-    const manufacturingDate = new Date(Date.parse("2020-01-01"));
-    const expirationDate = new Date(Date.parse("2022-06-15"));
-
-    const prod1 = new Product(
-      categoryId,
-      "Celular",
-      manufacturingDate,
-      false,
-      expirationDate,
-      120
-    );
-    const product1Saved = await this.productDB.save(prod1);
-
-    const prod2 = new Product(
-      categoryId,
-      "Tablet",
-      manufacturingDate,
-      false,
-      expirationDate,
-      240
-    );
-    const product2Saved = await this.productDB.save(prod2);
-
-    const products = await this.productDB.getList();
+    const products = await this.productDB.getList(null, 0);
     expect(products).to.be.an("array");
-    expect(products.length).to.be.equal(2);
+    expect(products.length > 1).to.be.true;
   });
-  it("■ Filtrar por categorias", async function () {});
+  it("Filtrar por categorias", async function () {
+    const products = await this.productDB.getList("Eletrônico", 0);
+    expect(products).to.be.not.null;
+    expect(products.length > 0).to.be.true;
+  });
 });
 
 // Support

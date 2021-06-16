@@ -12,9 +12,9 @@ beforeEach(async function () {
   this.categoryDao = new CategoryDB();
 });
 
-describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de categoria", async function () {
+describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de categoria", async function (done) {
   it("(store) Cadastrar categoria", async function () {
-    const newCategory = new Category("Eletrônico");
+    const newCategory = new Category("Eletrodoméstico");
     const categorySaved = Object.assign(
       Category,
       await this.categoryDao.save(newCategory)
@@ -25,22 +25,19 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
   });
 
   it("(store) Não deve cadastrar duas categorias com mesmo nome", async function () {
-    let expectedCategories = await this.categoryDao.getList();
     const category = new Category("Eletrônico");
-    await this.categoryDao.save(category);
-    expectedCategories = await this.categoryDao.getList();
+    let expectedCategories = await this.categoryDao.getList();
+
     try {
       await this.categoryDao.save(category);
     } catch (err) {
       expect(err).to.be.not.null;
       expect(err.message).to.be.equal("Categoria já cadastrada");
     }
-    const secondCheckCategories = await this.categoryDao.getList();
-    expect(secondCheckCategories.length).to.be.equal(1);
   });
 
   it("(update) Atualizar categoria", async function () {
-    const initialCategory = new Category("Eletronico");
+    const initialCategory = new Category("Eletrodoméstico");
     let categorySaved = await this.categoryDao.save(initialCategory);
     categorySaved = Object.assign(Category, categorySaved);
     expect(categorySaved.description).to.be.equal(initialCategory.description);
@@ -54,18 +51,15 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
     expect(updatedCategory.description).to.be.equal(categorySaved.description);
   });
   it("(index) Listar categorias", async function () {
-    await this.categoryDao.save(new Category("Eletrônico"));
-    await this.categoryDao.save(new Category("Jogos"));
-    await this.categoryDao.save(new Category("Lazer"));
-
     const categories = await this.categoryDao.getList();
 
-    expect(categories.length === 3).to.be.true;
+    expect(categories).to.be.an("array");
+    expect(categories.length > 1).to.be.true;
   });
 
   it("(delete) Remover categoria", async function () {
     const categoryToDelete = await this.categoryDao.save(
-      new Category("Eletrônico")
+      new Category("Eletrodoméstico")
     );
 
     await this.categoryDao.save(new Category("Jogos"));
@@ -83,32 +77,22 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
   });
 
   it("(show) Exibir categoria", async function () {
-    await this.categoryDao.save(new Category("Lazer"));
-    const categorySaved = await this.categoryDao.save(
-      new Category("Eletrônico")
-    );
-    const categoryFinded = await this.categoryDao.getOne(categorySaved.id);
+    const category = await this.categoryDao.getOne(1);
 
-    expect(categoryFinded).not.to.be.null;
+    expect(category).not.to.be.null;
 
-    const categoryValited = Object.assign(Category, categoryFinded);
+    const categoryValited = Object.assign(Category, category);
     expect(categoryValited).not.to.be.null;
-    expect(categoryValited.description).to.be.equal(categorySaved.description);
+    expect(categoryValited.description).to.be.equal("Eletrônico");
   });
 
   it("(show) Exibir categoria por nome", async function () {
-    await this.categoryDao.save(new Category("Lazer"));
-    const categorySaved = await this.categoryDao.save(
-      new Category("Eletrônico")
-    );
-    const categoryFinded = await this.categoryDao.getByDescription(
-      categorySaved.description
-    );
+    const category = await this.categoryDao.getByDescription("Eletrônico");
 
-    expect(categoryFinded).not.to.be.null;
+    expect(category).not.to.be.null;
 
-    const categoryValited = Object.assign(Category, categoryFinded);
+    const categoryValited = Object.assign(Category, category);
     expect(categoryValited).not.to.be.null;
-    expect(categoryValited.description).to.be.equal(categorySaved.description);
+    expect(categoryValited.description).to.be.equal("Eletrônico");
   });
 });

@@ -105,10 +105,46 @@ class ProductDB {
     }
   }
 
-  async getList() {
+  formatOrdering(text) {
+    if (text === undefined || text === null) {
+      return "asc";
+    }
+    if (text.toLowerCase() == "asc" || text.toLowerCase() == "desc") {
+      return text;
+    }
+    throw new Error(`Parâmetro de ordenação ${text} inválido`);
+  }
+
+  async getList(filters, pagination) {
     this.client = await getConnection();
+
+    if (filters === null) {
+      filters = {};
+      filters.category = "";
+    }
+    const formatedFilters = {
+      category:
+        filters.category !== undefined && filters.category !== null
+          ? filters.category
+          : "",
+      name: this.formatOrdering(filters.name),
+      manufacturing_date: this.formatOrdering(filters.manufacturing_date),
+      expiration_date: this.formatOrdering(filters.expiration_date),
+      price: this.formatOrdering(filters.price),
+    };
+
     try {
-      const products = await this.client.query(`SELECT * FROM \"PRODUCT\"`);
+      const page = pagination == 0 ? 0 : pagination * 10;
+      const sql = `SELECT p.id, p.category_id, p."name" , p.manufacturing_date, p.perishable_product , p.expiration_date, p.price 
+        FROM "PRODUCT" p inner join "CATEGORY" c on p.category_id = c.id
+        where c.description like '%${formatedFilters.category}%' 
+        order by
+        p."name" ${formatedFilters.name},
+        p.manufacturing_date ${formatedFilters.manufacturing_date},
+        p.expiration_date ${formatedFilters.expiration_date},
+        p.price ${formatedFilters.price}
+         OFFSET ${page}   LIMIT 10 `;
+      const products = await this.client.query(sql);
       return products.rows;
     } catch (err) {
       throw new Error("Erro ao buscar produtos no banco de dados.", err);

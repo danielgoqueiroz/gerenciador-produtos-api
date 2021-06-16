@@ -27,6 +27,8 @@ psql
 
 \q
 
+### Fechar processos node no windows
+
 ### O Projeto
 
 Desenvolver uma API RESTful utilizando nodejs e banco de dados relacional.
