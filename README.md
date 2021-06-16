@@ -39,62 +39,38 @@ $ \conninfo
 $ \q
 ````
 
-## Descrição de funcionalidades e modelagem
+### Get Starter
+
+Instale modulos com:
+
+```
+$ npm i
+```
+
+Rode em desenvolvimento com:
+(documentação será gerada automáticamente e estará disponível em 127.0.0.1:3000/ ):
+
+```
+$ npm run dev
+```
+
+Rode os testes com:
+
+```
+$ npm run test
+```
+
+## Descrição de funcionalidades
 
 ### Login
 
-#### Funcionalidade
-
 - (login) Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
-
-### Endpoint
-
-POST /user/login
-
-Objeto body do request:
-
-```
-{
-    name: string,
-    password: string
-}
-```
-
-response:
-
-```
-{
-  auth: boolean,
-  token: string
-}
-```
 
 ### Usuários (User)
 
-#### Funcionalidade
-
 - (store) Cadastrar usuário
 
-#### Endpoints
-
-GET /user
-GET /user/:id
-POST /user
-PUT /user/:id
-DELETE /user/id
-
-Objeto body do request (POST/PUT/DELETE):
-
-```
-{
-    name: string,
-    password: string
-}
-```
-
 ### Categorias (Category)
-
-#### Funcionalidades
 
 - (store) Cadastrar categoria
 - (update) Atualizar categoria
@@ -102,66 +78,25 @@ Objeto body do request (POST/PUT/DELETE):
 - (show) Exibir categoria
 - (index) Listar categorias
 
-#### Endpoints
-
-GET /category
-GET /category/:id
-POST /category
-PUT /category/:id
-DELETE /category/id
-
-Objeto body do request (POST/PUT/DELETE):
-
-```
-{
-    id: number,
-    description: string
-}
-```
-
 ### Produtos (Product)
-
-#### Funcionalidades
 
 - (store) Cadastrar produto
 - (update) Atualizar produto
 - (delete) Remover produto
 - (show) Exibir produto
 - (index) Listar produtos
-  ■ Filtrar por categorias
-
-  Exemplo de produto:
-
-#### Endpoints
-
-GET /product
-GET /product/:id
-POST /product
-PUT /product/:id
-DELETE /product/id
-
-Objeto body do request (POST/PUT/DELETE):
-
-```
-{
-  "id": number,s
-  "categoryId": number,
-  "name": string,
-  "manufacturingDate": date,
-  "perishableProduct": boolean,
-  "expirationDate": date,
-  "price": numeric,
-}
-```
+- Filtrar por categorias
 
 ## Regras de negócio
 
 - A data de fabricação (manufacturingDate) deve ser maior que a data de validade (expirationDate)
-- A listagem de produtos deve permitir ordenação por campos e com paginação contesndo 10 produtos por página;
+- A listagem de produtos deve permitir ordenação por campos e com paginação\* contesndo 10 produtos por página;
 - Utilizar testes unitários e de integração;
-- Documentação dos endpoints da API (sweagger);
+- Documentação dos endpoints da API (sweagger) - Disponível em 127.0.0.1/;
 
-## Referências
+\*Não foram testadas as variantes de ordenação para os campos;
+
+## Referências utilizadas
 
 - Node
 
@@ -191,4 +126,8 @@ https://hub.dockedpcr.com/_/postgres/
 
 ## Helpers
 
+Matar processos node no Windows
+
+```
 taskkill /im node.exe /F
+```
