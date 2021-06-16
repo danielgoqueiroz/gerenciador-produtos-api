@@ -31,6 +31,7 @@ describe("[ Banco de dados - Produto ] - Deve validar regras de persistência de
 
     expect(ProductSaved).to.not.be.null;
     expect(ProductSaved.id).to.not.be.null;
+    expect(ProductSaved.price).to.not.be.equal(120.01);
 
     const afterSavedProducts = await this.productDB.getList(null, 0);
 

@@ -1,3 +1,4 @@
+const { throws } = require("should");
 const getConnection = require("./dbConnect");
 
 class CategoryDB {
@@ -52,9 +53,13 @@ class CategoryDB {
     this.client = await getConnection();
     try {
       const categories = await this.client.query(
-        `SELECT * FROM \"CATEGORY\" WHERE description = '${description}'`
+        `SELECT * FROM \"CATEGORY\" WHERE description like '${description}'`
       );
-      return categories.rows.length == 1 ? categories.rows[0] : null;
+      const category = categories.rows.length == 1 ? categories.rows[0] : null
+      if (category) {
+        return category
+      } 
+      throw new Error("Encontrada mais de uma categoria com o mesmo nome")
     } catch (err) {
       throw new Error("Erro ao buscar item do banco de dados");
     } finally {

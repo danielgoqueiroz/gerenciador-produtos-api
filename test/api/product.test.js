@@ -19,7 +19,7 @@ describe("Testes de produtos", async function () {
       });
   });
 
-  it("(index) Listar produtos com autorização", async function () {
+  it("(index) Listar produtos", async function () {
     const headers = await doLogin();
 
     const url = `http://${process.env.HOST}:${process.env.PORT}/product`;

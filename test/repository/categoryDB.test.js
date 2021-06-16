@@ -86,7 +86,7 @@ describe("Teste de BD [ Categoria ] - Deve validar regras de persistência de ca
     expect(categoryValited.description).to.be.equal("Eletrônico");
   });
 
-  it("(show) Exibir categoria por nome", async function () {
+  it.only("(show) Exibir categoria por nome", async function () {
     const category = await this.categoryDao.getByDescription("Eletrônico");
 
     expect(category).not.to.be.null;
