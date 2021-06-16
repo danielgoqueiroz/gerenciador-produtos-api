@@ -21,7 +21,7 @@ describe("Testes de login", async function () {
   it("Login: Dado um usuário válido, deve gerar token do tipo bearer.", async function () {
     this.timeout(10000);
     const user = new User("Usuario Teste", "teste123");
-    const url = `http://${process.env.HOST}:${process.env.PORT}/user/login`;
+    const url = `http://${process.env.HOST}:${process.env.PORT}/login`;
 
     const result = await axios
       .post(url, user)

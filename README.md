@@ -11,16 +11,16 @@ autenticação de usuários.
 
 - Cada produto deve pertencer a uma categoria pré registrada no sistema.
 
-
 ## Pré-requisitos
+
 Ambiente de desenvolvimento/Testes - 19.3 Tricia
 
 - Node v14.5.0: (https://nodejs.org/en/download/)
-- - Check versão com ```$ node --version```
+- - Check versão com `$ node --version`
 - Npm 6.14.5: (https://docs.npmjs.com/getting-started)
-- - Check versão com ```npm --version```
+- - Check versão com `npm --version`
 - Docker 19.03.9 (https://docs.docker.com/engine/install/ubuntu/#installation-methods)
-- - Check versão com ```docker --version```
+- - Check versão com `docker --version`
 
 ## Configuração
 
@@ -30,20 +30,21 @@ Após instalação dos pré-requisitos básicos, configurar banco de dados:
 
 Comando de configuração de banco de dados (Linux).
 
-```
+````
 $ docker run --name ger_produtos -p 5432:5432 -e POSTGRES_PASSWORD=senha123 -d postgres
 $ docker exec -it ger_produtos bash```
 $ su postgres
 $ psql
 $ \conninfo
 $ \q
-```
+````
 
 ## Descrição de funcionalidades e modelagem
 
 ### Login
 
 #### Funcionalidade
+
 - (login) Login de usuário retornando um bearer token para utilizar nas chamadas abaixo
 
 ### Endpoint
@@ -58,18 +59,21 @@ Objeto body do request:
     password: string
 }
 ```
+
 response:
+
+```
 {
   auth: boolean,
   token: string
 }
+```
 
 ### Usuários (User)
 
 #### Funcionalidade
 
 - (store) Cadastrar usuário
-
 
 #### Endpoints
 
@@ -138,17 +142,17 @@ DELETE /product/id
 
 Objeto body do request (POST/PUT/DELETE):
 
-  ```
-  {
-    "id": number,s
-    "categoryId": number,
-    "name": string,
-    "manufacturingDate": date,
-    "perishableProduct": boolean,
-    "expirationDate": date,
-    "price": numeric,
-  }
-  ```
+```
+{
+  "id": number,s
+  "categoryId": number,
+  "name": string,
+  "manufacturingDate": date,
+  "perishableProduct": boolean,
+  "expirationDate": date,
+  "price": numeric,
+}
+```
 
 ## Regras de negócio
 
@@ -184,3 +188,7 @@ https://medium.com/swlh/automatic-api-documentation-in-node-js-using-swagger-dd1
 - Docker
 
 https://hub.dockedpcr.com/_/postgres/
+
+## Helpers
+
+taskkill /im node.exe /F

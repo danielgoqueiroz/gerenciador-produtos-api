@@ -26,7 +26,7 @@ class CategoryDB {
     }
   }
 
-  async getOne(id) {
+  async getById(id) {
     const isValid = new Number(id);
 
     if (isValid === undefined) {
@@ -53,13 +53,10 @@ class CategoryDB {
     this.client = await getConnection();
     try {
       const categories = await this.client.query(
-        `SELECT * FROM \"CATEGORY\" WHERE description like '${description}'`
+        `SELECT * FROM \"CATEGORY\" WHERE description like '%${description}%' ;`
       );
-      const category = categories.rows.length == 1 ? categories.rows[0] : null
-      if (category) {
-        return category
-      } 
-      throw new Error("Encontrada mais de uma categoria com o mesmo nome")
+      const category = categories.rows.length == 1 ? categories.rows[0] : null;
+      return category;
     } catch (err) {
       throw new Error("Erro ao buscar item do banco de dados");
     } finally {

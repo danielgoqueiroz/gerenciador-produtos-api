@@ -6,6 +6,8 @@ const productDB = new ProductDB();
 
 // // UPDATE Product
 router.put("/:id", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Product']
+  // #swagger.description = 'Endpoint para atualizar um produto.'
   const id = req.params.id;
   const product = req.body;
   product.id = id;
@@ -23,6 +25,8 @@ router.put("/:id", jwt.verifyJWT, async function (req, res) {
 
 // DELETE Products
 router.delete("/:id", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Product']
+  // #swagger.description = 'Endpoint para remover um produto.'
   const id = req.params.id;
   if (id) {
     const product = await productDB.delete(id);
@@ -36,6 +40,8 @@ router.delete("/:id", jwt.verifyJWT, async function (req, res) {
 
 // POST produto
 router.post("/", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Product']
+  // #swagger.description = 'Endpoint para criar um produto.'
   const product = req.body;
   const isDateInvalid =
     new Date(product.expiration_date).getTime() <
@@ -60,6 +66,8 @@ router.post("/", jwt.verifyJWT, async function (req, res) {
 
 // GET Products
 router.get("/", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Product']
+  // #swagger.description = 'Endpoint para bescar um produtos.'
   const page = req.query.page;
   const category =
     req.query.category !== undefined && req.query.category != null
@@ -81,6 +89,8 @@ router.get("/", jwt.verifyJWT, async function (req, res) {
 
 // GET Products
 router.get("/:id", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Product']
+  // #swagger.description = 'Endpoint para buscar um produto.'
   const id = req.params.id;
   if (id) {
     const product = await productDB.getById(id);

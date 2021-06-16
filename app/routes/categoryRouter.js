@@ -6,6 +6,8 @@ const categoryDB = new CategoryDB();
 
 // // UPDATE Category
 router.put("/:id", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para atualizar um categoria.'
   const id = req.params.id;
   const category = req.body;
   category.id = id;
@@ -23,6 +25,8 @@ router.put("/:id", jwt.verifyJWT, async function (req, res) {
 
 // DELETE Categories
 router.delete("/:id", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para deletar um categoria.'
   const id = req.params.id;
   if (id) {
     const category = await categoryDB.delete(id);
@@ -36,51 +40,35 @@ router.delete("/:id", jwt.verifyJWT, async function (req, res) {
 
 // POST categoria
 router.post("/", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para adicionar um categoria.'
   const category = req.body;
-  const isDateInvalid =
-    new Date(category.expiration_date).getTime() <
-    new Date(category.manufacturing_date).getTime();
 
-  if (isDateInvalid) {
-    return res
-      .status(403)
-      .send({ message: "Data de fabricação maior que data de validade." });
-  }
   try {
     if (category) {
       const categorySaved = await categoryDB.save(category);
       return res.status(201).send(categorySaved);
     } else {
-      return res.status(401).send({ message: "Category inválido" });
+      return res.status(401).send({ message: "Categoria inválida" });
     }
   } catch (err) {
     return res.status(500).send({ message: "Erro no serviço", error: err });
   }
 });
 
-// GET Categorys
+// GET Categorias
 router.get("/", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para buscar um categorias.'
   const page = req.query.page;
-  const category =
-    req.query.category !== undefined && req.query.category != null
-      ? req.query.category
-      : "";
-
-  const filters = {
-    category: category,
-    manufacturing_date: req.query.manufacturing_date,
-    expiration_date: req.query.expiration_date,
-    price: req.query.price,
-  };
-  const categories = await categoryDB.getList(
-    filters,
-    page !== undefined ? page : 0
-  );
+  const categories = await categoryDB.getList();
   res.status(200).send(categories);
 });
 
-// GET Categorys
+// GET Categorias
 router.get("/:id", jwt.verifyJWT, async function (req, res) {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para buscar um categoria.'
   const id = req.params.id;
   if (id) {
     const category = await categoryDB.getById(id);

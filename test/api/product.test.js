@@ -202,7 +202,7 @@ describe("Testes de produtos", async function () {
 
 async function doLogin() {
   const user = new User("Usuario Teste", "teste123");
-  const urlLogin = `http://${process.env.HOST}:${process.env.PORT}/user/login`;
+  const urlLogin = `http://${process.env.HOST}:${process.env.PORT}/login`;
 
   const headers = await axios
     .post(urlLogin, user)
